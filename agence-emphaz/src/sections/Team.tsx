@@ -17,6 +17,7 @@ interface TeamMember {
   role: string;
   description: string;
   modelPath: string; // Path to the 3D head model
+  modelScale: number; // Scale individuel pour chaque modèle
   stats: {
     creativity: number;
     technical: number;
@@ -28,27 +29,30 @@ interface TeamMember {
 const teamMembers: TeamMember[] = [
   {
     id: 1,
-    name: 'Alexandre Martin',
+    name: 'Valentin Halassa',
     role: 'Directeur Créatif',
     description: 'Visionnaire créatif avec plus de 10 ans d\'expérience dans la direction artistique et le branding cinématographique.',
     modelPath: '/models/head1.glb',
+    modelScale:4,
     stats: { creativity: 95, technical: 75, leadership: 90 },
   },
   {
     id: 2,
-    name: 'Sophie Laurent',
+    name: 'Mohamed Leulmi',
     role: 'Lead Developer',
-    description: 'Experte en développement web et 3D, elle transforme les visions créatives en expériences interactives immersives.',
+    description: 'Expert en développement web et 3D, il transforme les visions créatives en expériences interactives immersives.',
     modelPath: '/models/head2.glb',
+    modelScale: 4,
     stats: { creativity: 80, technical: 98, leadership: 85 },
   },
   {
-    id: 2,
+    id: 3,
     name: 'Sophie Laurent',
-    role: 'Lead Developer',
-    description: 'Experte en développement web et 3D, elle transforme les visions créatives en expériences interactives immersives.',
+    role: 'Motion Designer',
+    description: 'Artiste du mouvement, elle donne vie aux projets avec des animations fluides et captivantes.',
     modelPath: '/models/head3.glb',
-    stats: { creativity: 80, technical: 98, leadership: 85 },
+    modelScale: 0.7,
+    stats: { creativity: 92, technical: 88, leadership: 70 },
   },
 ];
 
@@ -61,7 +65,7 @@ const companyInfo = {
 };
 
 // 3D Head Model Component
-const HeadModel = ({ modelPath }: { modelPath: string }) => {
+const HeadModel = ({ modelPath, modelScale }: { modelPath: string; modelScale: number }) => {
   const { scene } = useGLTF(modelPath);
 
   // Clone the scene to avoid conflicts
@@ -83,7 +87,7 @@ const HeadModel = ({ modelPath }: { modelPath: string }) => {
   }, [scene]);
 
   return (
-    <primitive object={clonedScene} scale={5} position={[0, 0, 0]} />
+    <primitive object={clonedScene} scale={modelScale} position={[0, 0, 0]} />
   );
 };
 
@@ -104,9 +108,9 @@ const PlaceholderHead = () => {
 };
 
 // Error Boundary for 3D model loading
-const ModelWithFallback = ({ modelPath }: { modelPath: string }) => {
+const ModelWithFallback = ({ modelPath, modelScale }: { modelPath: string; modelScale: number }) => {
   try {
-    return <HeadModel modelPath={modelPath} />;
+    return <HeadModel modelPath={modelPath} modelScale={modelScale} />;
   } catch {
     return <PlaceholderHead />;
   }
@@ -265,7 +269,7 @@ const Team = () => {
                 <pointLight position={[0, -3, 2]} intensity={0.4} color="#F5C518" />
 
                 <Suspense fallback={<PlaceholderHead />}>
-                  <ModelWithFallback key={selectedMember.id} modelPath={selectedMember.modelPath} />
+                  <ModelWithFallback key={selectedMember.id} modelPath={selectedMember.modelPath} modelScale={selectedMember.modelScale} />
                   <Environment preset="city" />
                 </Suspense>
 

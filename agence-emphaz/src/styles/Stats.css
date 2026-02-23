@@ -1,0 +1,231 @@
+/* ============================================
+   STATS SECTION - Falling Balls Effect
+   ============================================ */
+
+.stats {
+  position: relative;
+  min-height: 100vh;
+  padding: var(--spacing-xl) var(--spacing-md);
+  background: var(--color-bg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ----- Background Particles ----- */
+.stats__particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.stats__particle {
+  position: absolute;
+  bottom: -10px;
+  width: 4px;
+  height: 4px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: floatUp 5s ease-in-out infinite;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-100vh) scale(0.5);
+    opacity: 0;
+  }
+}
+
+/* ----- Container ----- */
+.stats__container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ----- Header ----- */
+.stats__header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.stats__label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-sm);
+}
+
+.stats__title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* ----- Grid ----- */
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 1024px) {
+  .stats__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .stats__grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+}
+
+/* ----- Stat Card ----- */
+.stat-card {
+  perspective: 1000px;
+}
+
+.stat-card__inner {
+  position: relative;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: var(--spacing-lg) var(--spacing-md);
+  text-align: center;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition:
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    border-color 0.4s ease;
+}
+
+.stat-card__inner:hover {
+  transform: translateY(-8px);
+  border-color: rgba(245, 197, 24, 0.3);
+}
+
+/* Glow effect */
+.stat-card__glow {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    rgba(245, 197, 24, 0.15) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.stat-card__inner:hover .stat-card__glow {
+  opacity: 1;
+}
+
+/* Value styling */
+.stat-card__value {
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-xs);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0.1em;
+}
+
+.stat-card__suffix {
+  font-size: 0.5em;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+/* Label */
+.stat-card__label {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+/* Ring decoration */
+.stat-card__ring {
+  position: absolute;
+  bottom: -60px;
+  right: -60px;
+  width: 150px;
+  height: 150px;
+  border: 2px solid rgba(245, 197, 24, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+  transition: transform 0.6s ease, border-color 0.4s ease;
+}
+
+.stat-card__inner:hover .stat-card__ring {
+  transform: scale(1.2) rotate(45deg);
+  border-color: rgba(245, 197, 24, 0.2);
+}
+
+/* ----- Bottom Fade ----- */
+.stats__fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: linear-gradient(
+    to top,
+    var(--color-bg-secondary) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* ----- Impact Line (decorative) ----- */
+.stat-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleY(0);
+  width: 2px;
+  height: 100vh;
+  background: linear-gradient(
+    to top,
+    var(--color-accent) 0%,
+    transparent 100%
+  );
+  opacity: 0;
+  transform-origin: bottom;
+  animation: none;
+}
+

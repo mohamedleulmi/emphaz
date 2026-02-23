@@ -1,0 +1,107 @@
+/* ============================================
+   SOUND TOGGLE - Cinematic Audio Control
+   ============================================ */
+
+.sound-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  padding: 0.75rem 1.25rem;
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(245, 197, 24, 0.2);
+  border-radius: 50px;
+
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.sound-toggle:hover {
+  background: rgba(10, 10, 10, 0.95);
+  border-color: rgba(245, 197, 24, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 40px rgba(245, 197, 24, 0.15);
+}
+
+.sound-toggle:active {
+  transform: translateY(0);
+}
+
+/* Sound Bars Container */
+.sound-toggle__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+}
+
+/* Individual Sound Bar */
+.sound-toggle__bar {
+  width: 3px;
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: 2px;
+  transform-origin: bottom;
+  transform: scaleY(0.2);
+  opacity: 0.5;
+}
+
+/* When playing - bars are animated via GSAP */
+.sound-toggle--playing .sound-toggle__bar {
+  opacity: 1;
+}
+
+/* Label */
+.sound-toggle__label {
+  font-family: var(--font-secondary);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.sound-toggle:hover .sound-toggle__label {
+  color: var(--color-accent);
+}
+
+.sound-toggle--playing .sound-toggle__label {
+  color: var(--color-text);
+}
+
+/* ----- Responsive ----- */
+@media (max-width: 768px) {
+  .sound-toggle {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .sound-toggle__label {
+    font-size: 0.55rem;
+  }
+}
+
+/* ----- Initial Animation ----- */
+@keyframes soundToggleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sound-toggle {
+  animation: soundToggleFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1s both;
+}
+

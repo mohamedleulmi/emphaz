@@ -75,7 +75,7 @@ const Cursor = () => {
       }
       if (ringRef.current) {
         ringRef.current.style.transform =
-          `translate3d(${ringPos.current.x - 20}px, ${ringPos.current.y - 20}px, 0)`;
+          `translate3d(${ringPos.current.x - 60}px, ${ringPos.current.y - 60}px, 0)`;
       }
 
       rafId = requestAnimationFrame(animate);

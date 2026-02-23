@@ -6,7 +6,7 @@
 import { useState } from 'react';
 import { useLenis, useAmbientSound } from './hooks';
 import { Cursor, SoundToggle, EnterScreen } from './components';
-import { Hero, Stats } from './sections';
+import { Hero, Stats, Team } from './sections';
 import './styles/globals.css';
 
 function App() {
@@ -50,19 +50,7 @@ function App() {
       <main>
         <Hero />
         <Stats />
-
-        {/* Placeholder section for scroll testing */}
-        <section style={{
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: 'var(--color-bg-secondary)'
-        }}>
-          <h2 style={{ color: 'var(--color-text-muted)' }}>
-            More content coming soon...
-          </h2>
-        </section>
+        <Team />
       </main>
     </>
   );

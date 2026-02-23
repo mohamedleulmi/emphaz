@@ -1,10 +1,11 @@
 /**
  * CinemaObject Component
- * 3D Spiral/Vortex inspired by Emphaz logo
+ * 3D GLB Model loader with mouse interaction
  */
 
-import { useRef, useMemo } from 'react';
+import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
+import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface CinemaObjectProps {
@@ -12,73 +13,15 @@ interface CinemaObjectProps {
   mouseY?: number;
 }
 
-// Custom spiral geometry generator
-const createSpiralGeometry = () => {
-  const points: THREE.Vector3[] = [];
-  const turns = 3; // Number of spiral turns
-  const height = 2.5;
-  const segments = 200;
-
-  for (let i = 0; i <= segments; i++) {
-    const t = i / segments;
-    const angle = t * Math.PI * 2 * turns;
-    const radius = 0.3 + t * 1.2; // Expanding radius
-    const y = (t - 0.5) * height;
-
-    points.push(new THREE.Vector3(
-      Math.cos(angle) * radius,
-      y,
-      Math.sin(angle) * radius
-    ));
-  }
-
-  return new THREE.TubeGeometry(
-    new THREE.CatmullRomCurve3(points),
-    150,
-    0.08,
-    12,
-    false
-  );
-};
+// Chemin vers votre fichier GLB dans le dossier public
+const MODEL_PATH = '/model.glb';
 
 const CinemaObject = ({ mouseX = 0, mouseY = 0 }: CinemaObjectProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const targetRotation = useRef({ x: 0, y: 0 });
 
-  // Create spiral geometry once
-  const spiralGeometry = useMemo(() => createSpiralGeometry(), []);
-
-  // Create inner spiral (smaller, offset)
-  const innerSpiralGeometry = useMemo(() => {
-    const points: THREE.Vector3[] = [];
-    const turns = 2.5;
-    const height = 1.8;
-    const segments = 150;
-
-    for (let i = 0; i <= segments; i++) {
-      const t = i / segments;
-      const angle = t * Math.PI * 2 * turns + Math.PI; // Offset by PI
-      const radius = 0.2 + t * 0.7;
-      const y = (t - 0.5) * height;
-
-      points.push(new THREE.Vector3(
-        Math.cos(angle) * radius,
-        y,
-        Math.sin(angle) * radius
-      ));
-    }
-
-    return new THREE.TubeGeometry(
-      new THREE.CatmullRomCurve3(points),
-      100,
-      0.06,
-      10,
-      false
-    );
-  }, []);
-
-  // Core sphere at center
-  const coreGeometry = useMemo(() => new THREE.SphereGeometry(0.25, 32, 32), []);
+  // Charger le modèle GLB
+  const { scene } = useGLTF(MODEL_PATH);
 
   useFrame((state) => {
     if (!groupRef.current) return;
@@ -105,40 +48,13 @@ const CinemaObject = ({ mouseX = 0, mouseY = 0 }: CinemaObjectProps) => {
 
   return (
     <group ref={groupRef}>
-      {/* Outer spiral - white/light */}
-      <mesh geometry={spiralGeometry} castShadow>
-        <meshStandardMaterial
-          color="#FFFFFF"
-          emissive="#FFFFFF"
-          emissiveIntensity={0.1}
-          roughness={0.3}
-          metalness={0.7}
-        />
-      </mesh>
-
-      {/* Inner spiral - gold accent */}
-      <mesh geometry={innerSpiralGeometry} castShadow>
-        <meshStandardMaterial
-          color="#F5C518"
-          emissive="#8B6508"
-          emissiveIntensity={0.2}
-          roughness={0.25}
-          metalness={0.9}
-        />
-      </mesh>
-
-      {/* Core sphere - dark with gold rim light effect */}
-      <mesh geometry={coreGeometry}>
-        <meshStandardMaterial
-          color="#1a1a1a"
-          emissive="#F5C518"
-          emissiveIntensity={0.05}
-          roughness={0.2}
-          metalness={0.95}
-        />
-      </mesh>
+      {/* Modèle GLB */}
+      <primitive object={scene} scale={4} castShadow receiveShadow />
     </group>
   );
 };
+
+// Précharger le modèle pour de meilleures performances
+useGLTF.preload(MODEL_PATH);
 
 export default CinemaObject;

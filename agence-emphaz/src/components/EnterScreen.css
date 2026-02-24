@@ -26,6 +26,59 @@
   pointer-events: none;
 }
 
+/* ============================================
+   LOADER - Z Filling Animation
+   ============================================ */
+
+.enter-screen__loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.enter-screen__loader-z {
+  position: relative;
+  font-family: var(--font-primary);
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  line-height: 1;
+}
+
+.enter-screen__loader-z-outline {
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(245, 197, 24, 0.2);
+  text-stroke: 2px rgba(245, 197, 24, 0.2);
+}
+
+.enter-screen__loader-z-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--color-accent);
+  transition: clip-path 0.15s ease-out;
+  filter: drop-shadow(0 0 20px rgba(245, 197, 24, 0.3));
+}
+
+
+.enter-screen__loader-progress {
+  margin-top: 2rem;
+  font-family: var(--font-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  color: var(--color-accent);
+  opacity: 0.8;
+}
+
+/* ============================================
+   CONTENT
+   ============================================ */
+
 /* Content Container */
 .enter-screen__content {
   position: relative;
@@ -34,6 +87,10 @@
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+}
+
+.enter-screen__content--hidden {
+  pointer-events: none;
 }
 
 /* Logo */
@@ -51,6 +108,11 @@
   letter-spacing: 0.3em;
   color: var(--color-text);
   text-transform: uppercase;
+}
+
+.enter-screen__logo-z {
+  display: inline-block;
+  color: var(--color-accent);
 }
 
 .enter-screen__logo-accent {
@@ -129,6 +191,11 @@
   letter-spacing: 0.1em;
   color: var(--color-text-muted);
   opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.enter-screen__sound-notice--hidden {
+  opacity: 0;
 }
 
 /* ----- Responsive ----- */
@@ -144,6 +211,14 @@
   .enter-screen__sound-notice {
     bottom: 1.5rem;
     font-size: 0.6rem;
+  }
+
+  .enter-screen__loader-z {
+    letter-spacing: 0.15em;
+  }
+
+  .enter-screen__loader-progress {
+    font-size: 0.7rem;
   }
 }
 
